@@ -63,6 +63,7 @@ public class AuthorService implements AuthorDAO {
     }
 
     @Override
+    @Transactional
     public AuthorResponse update(Long id, AuthorRequest request) throws NotFoundException {
 
         Author author = repository.findById(id).orElseThrow(()->

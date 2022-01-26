@@ -96,4 +96,17 @@ public class PartnerController {
 
         return new ResponseEntity<List<PartnerResponse>>(service.getByLastName(lastName), HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "method that update a  partner by id if it exists")
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "partner no found"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 500, message = "internal server error")
+    })
+    public ResponseEntity<PartnerResponse> update(@PathVariable Long id, @RequestBody PartnerRequest request)
+            throws NotFoundException {
+
+        return new  ResponseEntity<PartnerResponse>(service.update(id, request), HttpStatus.OK);
+    }
 }

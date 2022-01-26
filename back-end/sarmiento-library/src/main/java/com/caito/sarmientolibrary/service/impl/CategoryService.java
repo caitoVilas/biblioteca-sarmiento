@@ -12,6 +12,7 @@ import com.caito.sarmientolibrary.service.contracts.CategoryDAO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class CategoryService implements CategoryDAO {
 
 
     @Override
+    @Transactional
     public CategoryResponse save(CategoryRequest request) {
 
         if (request.getName() == null || request.getName().isEmpty())
@@ -36,6 +38,7 @@ public class CategoryService implements CategoryDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryResponse getById(Long id) throws NotFoundException {
 
         Category category = repository.findById(id).orElseThrow(()->
@@ -44,6 +47,7 @@ public class CategoryService implements CategoryDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryResponse> getAll() {
 
         List<Category> categories = repository.findAll();
@@ -51,6 +55,7 @@ public class CategoryService implements CategoryDAO {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws NotFoundException {
 
         Category category = repository.findById(id).orElseThrow(()->
@@ -59,13 +64,14 @@ public class CategoryService implements CategoryDAO {
     }
 
     @Override
+    @Transactional
     public CategoryResponse update(Long id, CategoryRequest request) throws NotFoundException {
 
         Category category = repository.findById(id).orElseThrow(()->
                 new NotFoundException(ErrorMessageConstant.MSG_CTG_NO_FOUND + id));
         if (request.getName() == null || request.getName().isEmpty())
             throw new BadRequestException(ErrorMessageConstant.MSG_CTG_NO_CHANGES);
-        if (request.getName() != null && !request.getName().isEmpty())
+        if (request.getName() != null || !request.getName().isEmpty())
             repository.save(category);
         return responseMapper.categoryToCategoryResponse(category);
     }

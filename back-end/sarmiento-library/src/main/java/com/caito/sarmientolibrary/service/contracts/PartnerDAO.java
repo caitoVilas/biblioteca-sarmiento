@@ -14,4 +14,5 @@ public interface PartnerDAO {
     void delete(Long id) throws NotFoundException;
     PartnerResponse getByDni(String dni) throws NotFoundException;
     List<PartnerResponse> getByLastName(String lastName);
+    PartnerResponse update(Long id, PartnerRequest request) throws NotFoundException;
 }

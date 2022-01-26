@@ -12,6 +12,7 @@ import com.caito.sarmientolibrary.service.contracts.PartnerDAO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class PartnerService implements PartnerDAO {
 
 
     @Override
+    @Transactional
     public PartnerResponse save(PartnerRequest request) {
         if (repository.existsByDni(request.getDni()))
             throw new BadRequestException(ErrorMessageConstant.MSG_PRT_DNI_EXIST);
@@ -49,6 +51,7 @@ public class PartnerService implements PartnerDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PartnerResponse getById(Long id) throws NotFoundException {
 
         Partner partner = repository.findById(id).orElseThrow(()->
@@ -57,6 +60,7 @@ public class PartnerService implements PartnerDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PartnerResponse> getAll() {
 
         List<Partner> partners = repository.findAll();
@@ -64,6 +68,7 @@ public class PartnerService implements PartnerDAO {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws NotFoundException {
         Partner partner = repository.findById(id).orElseThrow(()->
                 new NotFoundException(ErrorMessageConstant.MSG_PRT_NO_FOUND));
@@ -71,6 +76,7 @@ public class PartnerService implements PartnerDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PartnerResponse getByDni(String dni) throws NotFoundException {
 
         Partner partner = repository.findByDni(dni).orElseThrow(()->
@@ -79,9 +85,32 @@ public class PartnerService implements PartnerDAO {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PartnerResponse> getByLastName(String lastName) {
 
         List<Partner> partners = repository.findByLastName(lastName);
         return responseMapper.partnerListToPartnerResponseList(partners);
+    }
+
+    @Override
+    @Transactional
+    public PartnerResponse update(Long id, PartnerRequest request) throws NotFoundException {
+
+        Partner partner = repository.findById(id).orElseThrow(()->
+                new NotFoundException(ErrorMessageConstant.MSG_PRT_NO_FOUND));
+        if (request.getName() != null || !request.getName().isEmpty())
+            partner.setName(request.getName());
+        if (request.getLastName() != null || !request.getLastName().isEmpty())
+            partner.setLastName(request.getLastName());
+        if (request.getDni() != null || !request.getDni().isEmpty())
+            partner.setDni(request.getDni());
+        if (request.getEmail() != null || !request.getEmail().isEmpty())
+            partner.setEmail(request.getEmail());
+        if (request.getHomeAdress() != null || !request.getHomeAdress().isEmpty())
+            partner.setHomeAdress(request.getHomeAdress());
+        if (request.getPhone() != null || !request.getPhone().isEmpty())
+            partner.setPhone(request.getPhone());
+        repository.save(partner);
+        return responseMapper.partnerToPartnerResponse(partner);
     }
 }

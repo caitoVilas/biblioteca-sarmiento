@@ -22,4 +22,11 @@ public class ErrorMessageConstant {
     public static final String MSG_PRT_NO_PHONE = "El telefono es requerido!";
     public static final String MSG_PRT_NO_FOUND = "No se encuentra el Socio con el id: ";
     public static final String MSG_PRT_NO_FOUND_DNI = "No se encuentra el Socio con el DNI: ";
+
+    //BOOKS
+    public static final String MSG_BOK_NO_TITLE = "El titulo es requerido!";
+    public static final String MSG_BOK_NO_AUT_ID = "El Id del Autor es requerido!";
+    public static final String MSG_BOK_NO_CTG_ID = "El Id de la categoria es requerido!";
+    public static final String MSG_BOK_NO_PAGES = "El numero de paginas es requerido!";
+    public static final String MSG_BOK_NO_FOUND = "No se encuentra el Libro con id: ";
 }
