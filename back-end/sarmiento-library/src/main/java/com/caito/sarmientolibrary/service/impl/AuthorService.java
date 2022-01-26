@@ -61,4 +61,20 @@ public class AuthorService implements AuthorDAO {
                 new NotFoundException(ErrorMessageConstant.MSG_AUT_NO_FOUND + id));
         repository.deleteById(author.getId());
     }
+
+    @Override
+    public AuthorResponse update(Long id, AuthorRequest request) throws NotFoundException {
+
+        Author author = repository.findById(id).orElseThrow(()->
+                new NotFoundException(ErrorMessageConstant.MSG_AUT_NO_FOUND + id));
+        if (request.getName() == null && request.getName().isEmpty()
+            && request.getLastName() == null && request.getLastName().isEmpty())
+            throw new BadRequestException(ErrorMessageConstant.MSG_AUT_NO_CHANGES);
+        if(request.getName() != null || !request.getName().isEmpty())
+            author.setName(request.getName());
+        if (request.getLastName() != null || !request.getLastName().isEmpty())
+            author.setLastName(request.getLastName());
+        repository.save(author);
+        return responseMapper.authorToAuthorResponse(author);
+    }
 }

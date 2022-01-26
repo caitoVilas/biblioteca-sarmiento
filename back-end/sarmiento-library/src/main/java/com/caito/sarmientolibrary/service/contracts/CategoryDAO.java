@@ -12,4 +12,5 @@ public interface CategoryDAO {
     CategoryResponse getById(Long id) throws NotFoundException;
     List<CategoryResponse> getAll();
     void delete(Long id) throws NotFoundException;
+    CategoryResponse update(Long id, CategoryRequest request) throws NotFoundException;
 }

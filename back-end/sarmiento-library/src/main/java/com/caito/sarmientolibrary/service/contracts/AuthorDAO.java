@@ -12,4 +12,5 @@ public interface AuthorDAO {
     AuthorResponse getById(Long id) throws NotFoundException;
     List<AuthorResponse> getAll();
     void delete(Long id) throws NotFoundException;
+    AuthorResponse update(Long id, AuthorRequest request) throws NotFoundException;
 }

@@ -57,4 +57,16 @@ public class CategoryService implements CategoryDAO {
                 new NotFoundException(ErrorMessageConstant.MSG_CTG_NO_FOUND + id));
         repository.deleteById(category.getId());
     }
+
+    @Override
+    public CategoryResponse update(Long id, CategoryRequest request) throws NotFoundException {
+
+        Category category = repository.findById(id).orElseThrow(()->
+                new NotFoundException(ErrorMessageConstant.MSG_CTG_NO_FOUND + id));
+        if (request.getName() == null || request.getName().isEmpty())
+            throw new BadRequestException(ErrorMessageConstant.MSG_CTG_NO_CHANGES);
+        if (request.getName() != null && !request.getName().isEmpty())
+            repository.save(category);
+        return responseMapper.categoryToCategoryResponse(category);
+    }
 }

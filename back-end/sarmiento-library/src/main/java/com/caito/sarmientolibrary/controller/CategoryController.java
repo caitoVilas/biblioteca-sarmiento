@@ -72,4 +72,17 @@ public class CategoryController {
         service.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "method to update a category by id if it exists")
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "author no found"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 500, message = "internal server error")
+    })
+    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, CategoryRequest request)
+            throws NotFoundException {
+
+        return new ResponseEntity<CategoryResponse>(service.update(id, request), HttpStatus.OK);
+    }
 }

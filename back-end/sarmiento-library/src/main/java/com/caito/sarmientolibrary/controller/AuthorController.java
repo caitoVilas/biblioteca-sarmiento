@@ -72,4 +72,17 @@ public class AuthorController {
         service.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    @ApiOperation(value = "method to update an author by id if it exists")
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "author no found"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 500, message = "internal server error")
+    })
+    public ResponseEntity<AuthorResponse> update(@PathVariable Long id, @RequestBody AuthorRequest request)
+            throws NotFoundException {
+
+        return new ResponseEntity<AuthorResponse>(service.update(id, request), HttpStatus.OK);
+    }
 }
