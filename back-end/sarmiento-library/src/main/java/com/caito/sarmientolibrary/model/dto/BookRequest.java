@@ -14,6 +14,8 @@ public class BookRequest {
     private Long author_id;
     @ApiModelProperty(name = "category_id", required = true, example = "1")
     private Long category_id;
+    @ApiModelProperty(name = "editorial_id", required = true, example = "1")
+    private Long editorial_id;
     @ApiModelProperty(name = "pages", required = true, example = "100")
     private Integer pages;
 }

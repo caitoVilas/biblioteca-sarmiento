@@ -85,4 +85,18 @@ public class BookController {
 
         return new ResponseEntity<BookResponse>(service.update(id, request), HttpStatus.OK);
     }
+
+    @GetMapping("/{criterion}/{id}")
+    @ApiOperation(value = "method that returns a list of books by category  or author or editorial" +
+            " if they exist")
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "book no found"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 500, message = "internal server error")
+    })
+    public ResponseEntity<List<BookResponse>> getBy(@PathVariable String criterion,
+                                                    @PathVariable Long id) throws NotFoundException {
+
+        return new ResponseEntity<List<BookResponse>>(service.getBy(criterion, id), HttpStatus.OK);
+    }
 }

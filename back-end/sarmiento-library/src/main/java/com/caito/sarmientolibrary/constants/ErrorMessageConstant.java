@@ -29,4 +29,12 @@ public class ErrorMessageConstant {
     public static final String MSG_BOK_NO_CTG_ID = "El Id de la categoria es requerido!";
     public static final String MSG_BOK_NO_PAGES = "El numero de paginas es requerido!";
     public static final String MSG_BOK_NO_FOUND = "No se encuentra el Libro con id: ";
+    public static final String MSG_BOX_NO_CRITERION = "No se especifico parametro de busqueda!";
+    public static final String MSG_BOX_CRITERION_ERROR = "El criterio de busqueda no existe";
+    public static final String MSG_BOX_NO_EDT_ID = "El id de la editorial es requerido!";
+
+    //EDITORIAL
+    public static final String MSG_EDT_NO_NAME = "El nombre es requerido!";
+    public static final String MSG_EDT_NAME_EXISTS = "El nombre de la Editorial ya existe!";
+    public static final String MSG_EDT_NO_FOUND = "No se encuentra la editorial con id: ";
 }

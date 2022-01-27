@@ -18,6 +18,8 @@ public class BookResponse {
     private AuthorResponse author;
     @ApiModelProperty(name = "category")
     private CategoryResponse category;
+    @ApiModelProperty(name = "editorial")
+    private EditorialResponse editorial;
     @ApiModelProperty(name = "pages", example = "100")
     private Integer pages;
     @ApiModelProperty(name = "created", example = "01/01/01-01:01:01")
