@@ -8,4 +8,5 @@ import java.util.List;
 public interface LoanDAO {
 
     List<LoanResponse> partnerLoanRequest(List<LoanRequest> requests);
+    List<LoanResponse> partnerReturnRequest(List<LoanRequest> requests);
 }

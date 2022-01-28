@@ -24,4 +24,6 @@ public class Loan {
     private Partner partner;
     private LocalDateTime dateTime;
     private String comment;
+    @Column(nullable = false, length = 1)
+    private String status;
 }

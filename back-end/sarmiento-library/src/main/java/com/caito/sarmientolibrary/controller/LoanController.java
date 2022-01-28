@@ -34,4 +34,16 @@ public class LoanController {
 
         return new ResponseEntity<List<LoanResponse>>(service.partnerLoanRequest(requests), HttpStatus.OK);
     }
+
+    @PostMapping("/return")
+    @ApiOperation(value = "method to register the return of books to partners")
+    @ApiResponses({
+            @ApiResponse(code = 404, message = "no found"),
+            @ApiResponse(code = 400, message = "bad request"),
+            @ApiResponse(code = 500, message = "internal server error")
+    })
+    public ResponseEntity<List<LoanResponse>> partnerReturnRequest(@RequestBody List<LoanRequest> requests){
+
+        return new ResponseEntity<List<LoanResponse>>(service.partnerReturnRequest(requests), HttpStatus.OK);
+    }
 }

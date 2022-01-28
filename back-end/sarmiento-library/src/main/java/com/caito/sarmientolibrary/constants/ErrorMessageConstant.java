@@ -44,4 +44,5 @@ public class ErrorMessageConstant {
     public static final String MSG_LAN_BOOK_NO_ID = "El id de Libro es requerido!";
     public static final String MSG_LAN_PARTNER_NO_ID = "el id del Socio es requerido!";
     public static final String MSG_LAN_BOOK_NO_AVAILABLE = "El libro solicitado no esta disponible!";
+    public static final String MSG_LAN_NO_BOOKS_RETURNS = "No se han introducido Libros para devolver!";
 }

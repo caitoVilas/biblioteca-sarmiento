@@ -67,6 +67,7 @@ public class LoanService implements LoanDAO {
             }
             loan.setComment(request.getComment());
             loan.setDateTime(LocalDateTime.now());
+            loan.setStatus("L");
             loans.add(loan);
             repository.save(loan);
             book.setAvailable(false);
@@ -74,4 +75,43 @@ public class LoanService implements LoanDAO {
         });
         return responseMapper.loanListToLoanResponseList(loans);
     }
+
+    @Override
+    @Transactional
+    public List<LoanResponse> partnerReturnRequest(List<LoanRequest> requests) {
+        List<Loan> loans = new ArrayList<>();
+        Loan loan = new Loan();
+
+        if (requests.isEmpty())
+            throw new BadRequestException(ErrorMessageConstant.MSG_LAN_NO_BOOKS_RETURNS);
+        requests.stream().forEach((request -> {
+            Book book = null;
+            if (request.getBook_id() == null)
+                throw new BadRequestException((ErrorMessageConstant.MSG_LAN_BOOK_NO_ID));
+            try {
+                book = bookRepository.findById(request.getBook_id()).orElseThrow(()->
+                        new NotFoundException(ErrorMessageConstant.MSG_BOK_NO_FOUND + request.getBook_id()));
+                loan.setBook(book);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                Partner partner = partnerRepository.findById(request.getPartner_id()).orElseThrow(()->
+                        new NotFoundException(ErrorMessageConstant.MSG_PRT_NO_FOUND + request.getPartner_id()));
+                loan.setPartner(partner);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+            loan.setComment(request.getComment());
+            loan.setDateTime(LocalDateTime.now());
+            loan.setStatus("R");
+            loans.add(loan);
+            repository.save(loan);
+            book.setAvailable(true);
+            bookRepository.save(book);
+        }));
+        return responseMapper.loanListToLoanResponseList(loans);
+    }
+
+
 }
