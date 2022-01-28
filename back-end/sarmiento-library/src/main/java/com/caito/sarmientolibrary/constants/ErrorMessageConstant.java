@@ -37,4 +37,11 @@ public class ErrorMessageConstant {
     public static final String MSG_EDT_NO_NAME = "El nombre es requerido!";
     public static final String MSG_EDT_NAME_EXISTS = "El nombre de la Editorial ya existe!";
     public static final String MSG_EDT_NO_FOUND = "No se encuentra la editorial con id: ";
+
+    //LOAN
+
+    public static final String MSG_LAN_NO_CONTENT = "No se han hecho pedidos!";
+    public static final String MSG_LAN_BOOK_NO_ID = "El id de Libro es requerido!";
+    public static final String MSG_LAN_PARTNER_NO_ID = "el id del Socio es requerido!";
+    public static final String MSG_LAN_BOOK_NO_AVAILABLE = "El libro solicitado no esta disponible!";
 }
