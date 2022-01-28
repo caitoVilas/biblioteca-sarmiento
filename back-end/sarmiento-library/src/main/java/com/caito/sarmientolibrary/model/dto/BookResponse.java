@@ -22,6 +22,8 @@ public class BookResponse {
     private EditorialResponse editorial;
     @ApiModelProperty(name = "pages", example = "100")
     private Integer pages;
+    @ApiModelProperty(name = "available", required = true, example = "true")
+    private boolean available;
     @ApiModelProperty(name = "created", example = "01/01/01-01:01:01")
     private LocalDateTime created;
     @ApiModelProperty(name = "updated", example = "01/01/01-01:01:01")

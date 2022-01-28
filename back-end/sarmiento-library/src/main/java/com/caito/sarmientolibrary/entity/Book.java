@@ -35,6 +35,8 @@ public class Book {
     private Editorial editorial;
     @Column(length = 4)
     private Integer pages;
+    @Column(nullable = false)
+    private boolean available;
     @CreationTimestamp
     private LocalDateTime created;
     @UpdateTimestamp

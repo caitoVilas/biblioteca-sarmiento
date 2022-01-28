@@ -61,6 +61,7 @@ public class BookService implements BookDAO {
         book.setCategory(category);
         book.setEditorial(editorial);
         book.setPages(request.getPages());
+        book.setAvailable(true);
         repository.save(book);
         return responseMapper.bookToBookResponse(book);
     }
