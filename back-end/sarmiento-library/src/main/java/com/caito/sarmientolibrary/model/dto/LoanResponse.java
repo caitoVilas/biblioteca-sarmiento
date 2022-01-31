@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,8 +17,8 @@ public class LoanResponse {
     private BookResponse book;
     @ApiModelProperty(name = "partner")
     private PartnerResponse partner;
-    @ApiModelProperty(name = "dateTime", example = "01/01/01 01:01:01")
-    private LocalDateTime dateTime;
+    @ApiModelProperty(name = "date", example = "01/01/01")
+    private LocalDate date;
     @ApiModelProperty(name = "comment", example = "comment of a loan")
     private String comment;
 }

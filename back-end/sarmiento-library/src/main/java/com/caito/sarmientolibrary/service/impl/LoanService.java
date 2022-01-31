@@ -3,6 +3,7 @@ package com.caito.sarmientolibrary.service.impl;
 import com.caito.sarmientolibrary.constants.ErrorMessageConstant;
 import com.caito.sarmientolibrary.entity.Book;
 import com.caito.sarmientolibrary.entity.Loan;
+import com.caito.sarmientolibrary.entity.LoanReturn;
 import com.caito.sarmientolibrary.entity.Partner;
 import com.caito.sarmientolibrary.exception.custom.BadRequestException;
 import com.caito.sarmientolibrary.mapper.LoanResponseMapper;
@@ -10,6 +11,7 @@ import com.caito.sarmientolibrary.model.dto.LoanRequest;
 import com.caito.sarmientolibrary.model.dto.LoanResponse;
 import com.caito.sarmientolibrary.repository.BookRepository;
 import com.caito.sarmientolibrary.repository.LoanRepository;
+import com.caito.sarmientolibrary.repository.LoanReturnRepository;
 import com.caito.sarmientolibrary.repository.PartnerRepository;
 import com.caito.sarmientolibrary.service.contracts.LoanDAO;
 import javassist.NotFoundException;
@@ -17,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class LoanService implements LoanDAO {
 
     @Autowired
     private LoanRepository repository;
+    @Autowired
+    private LoanReturnRepository returnRepository;
     @Autowired
     private BookRepository bookRepository;
     @Autowired
@@ -66,8 +70,7 @@ public class LoanService implements LoanDAO {
                 e.printStackTrace();
             }
             loan.setComment(request.getComment());
-            loan.setDateTime(LocalDateTime.now());
-            loan.setStatus("L");
+            loan.setDate(LocalDate.now());
             loans.add(loan);
             repository.save(loan);
             book.setAvailable(false);
@@ -79,8 +82,8 @@ public class LoanService implements LoanDAO {
     @Override
     @Transactional
     public List<LoanResponse> partnerReturnRequest(List<LoanRequest> requests) {
-        List<Loan> loans = new ArrayList<>();
-        Loan loan = new Loan();
+        List<LoanReturn> loans = new ArrayList<>();
+        LoanReturn loan = new LoanReturn();
 
         if (requests.isEmpty())
             throw new BadRequestException(ErrorMessageConstant.MSG_LAN_NO_BOOKS_RETURNS);
@@ -103,14 +106,51 @@ public class LoanService implements LoanDAO {
                 e.printStackTrace();
             }
             loan.setComment(request.getComment());
-            loan.setDateTime(LocalDateTime.now());
-            loan.setStatus("R");
+            loan.setDate(LocalDate.now());
             loans.add(loan);
-            repository.save(loan);
+            returnRepository.save(loan);
             book.setAvailable(true);
             bookRepository.save(book);
         }));
+        return responseMapper.returnLoanToResponse(loans);
+    }
+
+    @Override
+    public List<LoanResponse> getLoanByPartner(Long id) throws NotFoundException {
+
+        if (id == null)
+            throw new BadRequestException(ErrorMessageConstant.MSG_LAN_PARTNER_NO_ID);
+        Partner partner = partnerRepository.findById(id).orElseThrow(()->
+                new NotFoundException(ErrorMessageConstant.MSG_PRT_NO_FOUND));
+        List<Loan> loans = repository.findByPartner(partner);
         return responseMapper.loanListToLoanResponseList(loans);
+    }
+
+    @Override
+    public List<LoanResponse> getReturnByPartner(Long id) throws NotFoundException {
+
+        if (id == null)
+            throw new BadRequestException(ErrorMessageConstant.MSG_LAN_PARTNER_NO_ID);
+        Partner partner = partnerRepository.findById(id).orElseThrow(()->
+                new NotFoundException(ErrorMessageConstant.MSG_PRT_NO_FOUND));
+        List<LoanReturn> loanReturns = returnRepository.findByPartner(partner);
+        return responseMapper.returnLoanToResponse(loanReturns);
+    }
+
+    @Override
+    public List<LoanResponse> getLoansByDate(LocalDate date) {
+        if (date == null)
+            date = LocalDate.now();
+        List<Loan> loans = repository.findByDate(date);
+        return responseMapper.loanListToLoanResponseList(loans);
+    }
+
+    @Override
+    public List<LoanResponse> getReturnsByDate(LocalDate date) {
+        if (date == null)
+            date = LocalDate.now();
+        List<LoanReturn> loanReturns = returnRepository.findByDate(date);
+        return responseMapper.returnLoanToResponse(loanReturns);
     }
 
 

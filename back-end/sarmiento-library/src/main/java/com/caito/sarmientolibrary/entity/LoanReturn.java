@@ -8,15 +8,14 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-@Entity(name = "loans")
-@SQLDelete(sql = "UPDATE loans SET deleted=true WHERE id=?")
+@Entity(name = "loans_returns")
+@SQLDelete(sql = "UPDATE loans_returns SET deleted=true WHERE id=?")
 @Where(clause = "deleted=false")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Loan {
+public class LoanReturn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +29,4 @@ public class Loan {
     private LocalDate date;
     private String comment;
     private boolean deleted;
-
 }
