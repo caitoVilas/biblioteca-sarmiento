@@ -16,6 +16,9 @@ import com.caito.sarmientolibrary.repository.EditorialRepository;
 import com.caito.sarmientolibrary.service.contracts.BookDAO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -152,5 +155,12 @@ public class BookService implements BookDAO {
             throw new BadRequestException(ErrorMessageConstant.MSG_BOX_CRITERION_ERROR);
         }
         return responseMapper.bookListToBookResponseList(books);
+    }
+
+    @Override
+    public Page<BookResponse> getPageable(Pageable pageable) {
+        Page<Book> pages = repository.findAll(pageable);
+        List<BookResponse> dtos = responseMapper.bookListToBookResponseList(pages.getContent());
+        return new PageImpl<>(dtos, pageable, pages.getTotalElements());
     }
 }

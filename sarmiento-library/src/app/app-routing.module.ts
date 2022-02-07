@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { BooksComponent } from './pages/books/books.component';
-import { LoansComponent } from './pages/loans/loans.component';
-import { ReturnsComponent } from './pages/returns/returns.component';
-import { SociosComponent } from './pages/socios/socios.component';
+import { BooksModule } from './modules/books/books.module';
+import { HomeModule } from './modules/home/home.module';
+import { LoansModule } from './modules/loans/loans.module';
+import { PartnersModule } from './modules/partners/partners.module';
+
 
 const routes: Routes = [
- {path: '', component: HeaderComponent},
- {path: 'socios', component: SociosComponent},
- {path: 'books', component: BooksComponent},
- {path: 'loans', component: LoansComponent},
- {path: 'returns', component: ReturnsComponent}
-];
-
+  {path: 'partners', loadChildren:()=> import('./modules/partners/partners.module').then(p=>PartnersModule)},
+  {path: 'books', loadChildren:()=> import('./modules/books/books.module').then(b=>BooksModule)},
+  {path: 'loans', loadChildren:()=> import('./modules/loans/loans.module').then(l=>LoansModule)},
+  {path: '', loadChildren:()=> import('./modules/home/home.module').then(m=>HomeModule)},
+]
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

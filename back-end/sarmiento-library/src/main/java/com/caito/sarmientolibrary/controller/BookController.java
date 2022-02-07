@@ -3,15 +3,20 @@ package com.caito.sarmientolibrary.controller;
 import com.caito.sarmientolibrary.model.dto.BookRequest;
 import com.caito.sarmientolibrary.model.dto.BookResponse;
 import com.caito.sarmientolibrary.service.impl.BookService;
+import com.caito.sarmientolibrary.entity.Book;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -98,5 +103,26 @@ public class BookController {
                                                     @PathVariable Long id) throws NotFoundException {
 
         return new ResponseEntity<List<BookResponse>>(service.getBy(criterion, id), HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<BookResponse>> getPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String order,
+            @RequestParam(defaultValue = "false") boolean asc
+    ){
+        Page<BookResponse> books = service.getPageable(PageRequest.of(
+                page,
+                size,
+                Sort.by(order)));
+        if (!asc){
+            books = service.getPageable(PageRequest.of(
+                    page,
+                    size,
+                    Sort.by(order).descending()
+            ));
+        }
+        return new ResponseEntity<Page<BookResponse>>(books, HttpStatus.OK);
     }
 }

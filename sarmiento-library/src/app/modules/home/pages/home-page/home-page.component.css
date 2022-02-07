@@ -1,4 +1,3 @@
-
 h1{
     font-size: 4rem;
     color: #fff;
@@ -22,7 +21,7 @@ a:hover{
 .container-header{
     margin: 0;
     padding: 0;
-    background-image: url(../../../assets/images/Books.jpg);
+    background-image: url('../../../../../assets/images/Books.jpg');
     margin-bottom: 0;
 }
 
@@ -47,4 +46,3 @@ a:hover{
 .img-header{
     width: 100px;
 }
-
